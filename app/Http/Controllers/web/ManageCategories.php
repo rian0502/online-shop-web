@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categories;
 use Illuminate\Http\Request;
 
 class ManageCategories extends Controller
@@ -15,6 +16,11 @@ class ManageCategories extends Controller
     public function index()
     {
         //
+        $data = [
+            'title' => 'Categories List',
+            'categories' => Categories::with('products')->get(),
+        ];
+        return view('categories.index', $data);
     }
 
     /**
@@ -25,6 +31,10 @@ class ManageCategories extends Controller
     public function create()
     {
         //
+        $data = [
+            'title' => 'Create Category',
+        ];
+        return view('categories.create', $data);
     }
 
     /**
@@ -36,6 +46,15 @@ class ManageCategories extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name' => 'required|unique:categories|string|max:255',
+            'description' => 'required',
+        ]);
+        Categories::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+        return redirect()->route('categories.index')->with('success', 'Category has been created successfully!');
     }
 
     /**
