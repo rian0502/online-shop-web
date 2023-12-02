@@ -34,7 +34,7 @@
                                         <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target="#exampleModal{{ $loop->index }}"><i class="far fa-eye"></i>
                                         </button>
-                                        @if ($item->products->count() < 1)
+                                     
                                             <form action="{{ route('products.destroy', $item->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
@@ -42,7 +42,7 @@
                                                 <button type="submit" class="btn btn-danger"><i
                                                         class="fas fa-trash"></i></button>
                                             </form>
-                                        @endif
+                           
                                     </td>
                                 </tr>
                             @endforeach

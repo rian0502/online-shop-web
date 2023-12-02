@@ -4,7 +4,10 @@ namespace App\Http\Controllers\web;
 
 use App\Models\Products;
 use App\Models\Categories;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\ImagesProduct;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class ManageProducts extends Controller
@@ -48,6 +51,40 @@ class ManageProducts extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|min:3|max:255',
+            'stock' => 'required|numeric',
+            'price' => 'required|numeric',
+            'description' => 'required|min:3',
+            'discount' => 'nullable|numeric',
+            'foto.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:800',
+        ]);
+        try {
+            DB::beginTransaction();
+            $product = Products::create([
+                'category_id' => $request->category_id,
+                'name' => $request->name,
+                'stock' => $request->stock,
+                'price' => $request->price,
+                'description' => $request->description,
+                'discount' => $request->discount,
+            ]);
+            foreach ($request->file('foto') as $key => $value) {
+                $file = $value;
+                $name_file = time() . '-' . Str::random(15) . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/products', $name_file);
+                ImagesProduct::create([
+                    'url' => $name_file,
+                    'product_id' => $product->id,
+                ]);
+            }
+            DB::commit();
+            return redirect()->route('products.index')->with('success', 'Product has been created');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('products.index')->with('error', 'Product failed to create');
+        }
     }
 
     /**

@@ -10,7 +10,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ route('categories.store') }}" method="POST">
+                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-6">
@@ -27,7 +27,7 @@
                                     <label>Category</label>
                                     <select class="form-control select2" style="width: 100%;" name="category_id">
                                         @foreach ($categories as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            <option value="{{ $item->id }}" {{ (old('category_id') == $item->id) ?  'selected' : ''}} >{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -45,7 +45,7 @@
                                     <label for="categoryname">Stock</label>
                                     <input type="number" min="0"
                                         class="form-control {{ $errors->has('stock') ? 'is-invalid' : '' }}"
-                                        id="categoryname" value="{{ old('name') }}" name="stock">
+                                        id="categoryname" value="{{ old('stock') }}" name="stock">
                                     @if ($errors->has('stock'))
                                         <span class="text-danger">{{ $errors->first('stock') }}</span>
                                     @endif
@@ -63,9 +63,18 @@
                                     <label for="categoryname">Discount</label>
                                     <input type="number" min="0"
                                         class="form-control {{ $errors->has('discount') ? 'is-invalid' : '' }}"
-                                        id="categoryname" value="{{ old('name') }}" name="discount">
+                                        id="categoryname" value="{{ old('discount') }}" name="discount">
                                     @if ($errors->has('discount'))
                                         <span class="text-danger">{{ $errors->first('discount') }}</span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label for="categoryname">Product Photos</label>
+                                    <input type="file" min="0" accept="image/*"
+                                        class="form-control {{ $errors->has('foto') ? 'is-invalid' : '' }}"
+                                        id="categoryname" value="{{ old('foto') }}" name="foto[]" multiple>
+                                    @if ($errors->has('foto'))
+                                        <span class="text-danger">{{ $errors->first('foto') }}</span>
                                     @endif
                                 </div>
                             </div>
