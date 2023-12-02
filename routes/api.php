@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\ProductUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -31,3 +32,7 @@ Route::group([
 
 });
 
+Route::get('/products', [ProductUserController::class,'index']);
+Route::get('/products/{id}', [ProductUserController::class,'productById']);
+Route::get('/products/category/{id}', [ProductUserController::class,'productByCategory']);
+Route::get('/categories', [ProductUserController::class,'categories']);
