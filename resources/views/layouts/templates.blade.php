@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="/assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
@@ -105,7 +107,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/widgets.html"
+                            <a href="{{ route('products.index') }}"
                                 class="nav-link  {{ request()->is('products*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-store"></i>
                                 <p>
@@ -198,8 +200,12 @@
     <script src="/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script src="/assets/plugins/select2/js/select2.full.min.js"></script>
+
     <script>
         $(function() {
+            $('.select2').select2()
             $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": false,
@@ -217,14 +223,14 @@
             });
         });
     </script>
-     @if (session('success'))
-     <script>
-         Swal.fire({
-             title: "Success",
-             text: "{{ session('success') }}",
-             icon: "success"
-         });
-     </script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: "Success",
+                text: "{{ session('success') }}",
+                icon: "success"
+            });
+        </script>
     @endif
 </body>
 

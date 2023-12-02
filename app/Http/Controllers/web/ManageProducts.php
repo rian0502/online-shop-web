@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\web;
 
-use App\Http\Controllers\Controller;
+use App\Models\Products;
+use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ManageProducts extends Controller
 {
@@ -15,6 +17,11 @@ class ManageProducts extends Controller
     public function index()
     {
         //
+        $data = [
+            'title' => 'Products List',
+            'products' => Products::with(['category', 'images'])->get(),
+        ];
+        return view('products.index', $data);
     }
 
     /**
@@ -25,6 +32,11 @@ class ManageProducts extends Controller
     public function create()
     {
         //
+        $data = [
+            'title' => 'Create Product',
+            'categories' => Categories::select('id', 'name')->get(),
+        ];
+        return view('products.create', $data);
     }
 
     /**

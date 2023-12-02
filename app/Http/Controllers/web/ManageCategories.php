@@ -77,6 +77,11 @@ class ManageCategories extends Controller
     public function edit($id)
     {
         //
+        $data = [
+            'title' => 'Edit Category',
+            'category' => Categories::find($id),
+        ];
+        return view('categories.edit', $data);
     }
 
     /**
@@ -100,5 +105,7 @@ class ManageCategories extends Controller
     public function destroy($id)
     {
         //
+        Categories::destroy($id);
+        return redirect()->route('categories.index')->with('success', 'Category has been deleted successfully!');
     }
 }

@@ -3,6 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\AuthController;
+use App\Http\Controllers\web\ManageProducts;
 use App\Http\Controllers\web\ManageCategories;
 
 /*
