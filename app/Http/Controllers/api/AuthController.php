@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('api')->except(['login']);
+    }
 
     public function login(Request $request)
     {
@@ -17,7 +22,7 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'user' => auth()->user(),
+                    'user' =>  User::where('email', $request->email)->first(),
                     'credentials' => [
                         'access_token' => $token,
                         'token_type' => 'bearer',
@@ -37,11 +42,11 @@ class AuthController extends Controller
 
     public function me()
     {
-        if (auth()->check()) {
+        if (Auth::guard('api')->check()) {
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'user' => auth()->user(),
+                    'user' => auth()->guard('api')->user(),
                 ],
                 'message' => 'User data'
             ], 200);
@@ -56,7 +61,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        if (auth()->check()) {
+        if (Auth::guard('api')->check()) {
             auth()->logout();
             return response()->json([
                 'success' => true,
@@ -74,13 +79,13 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        if (auth()->check()) {
+        if (Auth::guard('api')->check()) {
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'user' => auth()->user(),
+                    'user' =>  auth()->guard('api')->user(),
                     'credentials' => [
-                        'access_token' => auth()->refresh(),
+                        'access_token' => auth()->guard('api')->refresh(),
                         'token_type' => 'bearer',
                         'expires_in' => 3600,
                     ]

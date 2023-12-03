@@ -33,10 +33,10 @@ class Products extends Model
     }
     public function category()
     {
-        return $this->belongsTo(Categories::class);
+        return $this->belongsTo(Categories::class, 'category_id', 'id');
     }
     public function images()
     {
-        return $this->hasMany(ImagesProduct::class);
+        return $this->hasMany(ImagesProduct::class, 'product_id', 'id');
     }
 }
