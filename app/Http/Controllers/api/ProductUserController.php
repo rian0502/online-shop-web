@@ -10,11 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductUserController extends Controller
 {
-    //
     public function index()
     {
-        //debug token return token
-
         if (Auth::guard('api')->check()) {
             $products = Products::with(['images', 'category'])->get();
             return response()->json([
